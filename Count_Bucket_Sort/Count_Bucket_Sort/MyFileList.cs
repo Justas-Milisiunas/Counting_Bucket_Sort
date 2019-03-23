@@ -13,6 +13,14 @@ namespace Count_Bucket_Sort
         int currentNode;
         int nextNode;
 
+        public MyFileList(string fileName)
+        {
+            length = 0;
+
+            if (File.Exists(fileName))
+                File.Delete(fileName);
+        }
+
         /// <summary>
         /// Generates data and writes it to file
         /// </summary>
@@ -34,8 +42,7 @@ namespace Count_Bucket_Sort
                     writer.Write(4);
                     for (int j = 0; j < length; j++)
                     {
-                        int sudas = rand.Next(0, range);
-                        writer.Write(sudas);
+                        writer.Write(rand.Next(0, range));
                         if (j - 1 == length)
                             writer.Write(-1);
                         else
@@ -189,6 +196,8 @@ namespace Count_Bucket_Sort
             fs.Seek(currentNode, SeekOrigin.Begin);
             fs.Write(data, 0, 4);
         }
+
+
 
         /// <summary>
         /// Swaps previous node's data with current

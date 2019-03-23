@@ -15,24 +15,36 @@ namespace Count_Bucket_Sort
         /// </summary>
         /// <param name="n">Element count</param>
         /// <param name="seed"Seed></param>
-        public void TestArray_OP(int n, int seed, int range)
+        public void TestArray_OP(int seed, int range)
         {
-            //Array sorting
-            DataArray data = new MyArray(n, seed, range);
-            Console.WriteLine("[OP-ARRAY] Counting sort");
-            data.Print(data.Length);
+            Console.Clear();
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("COUNTING SORT OP");
+            builder.AppendLine("===================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |");
+            builder.AppendLine("========================ARRAY======================");
 
-            Stopwatch t1 = new Stopwatch();
-            t1.Start();
-            CountSort(data);
-            t1.Stop();
+            foreach(int count in Program.KIEKIAI)
+            {
+                //Array sorting
+                DataArray data = new MyArray(count, seed, range);
+                //data.Print(data.Length);
 
-            data.Print(data.Length);
-            Console.WriteLine("Time: " + t1.ElapsedMilliseconds + "ms");
+                Stopwatch t1 = new Stopwatch();
+                t1.Start();
+                CountSort(data);
+                t1.Stop();
 
-            //Clears memory
-            data = null;
-            System.GC.Collect();
+                //data.Print(data.Length);
+                //Console.WriteLine("Time: " + t1.ElapsedMilliseconds + "ms");
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+
+                //Clears memory
+                data = null;
+                System.GC.Collect();
+            }
+
+            Console.Write(builder.ToString());
         }
 
         /// <summary>
@@ -41,24 +53,31 @@ namespace Count_Bucket_Sort
         /// <param name="n">Elements count</param>
         /// <param name="seed">Generating seed</param>
         /// <param name="range">Generated element range</param>
-        public void TestList_OP(int n, int seed, int range)
+        public void TestList_OP(int seed, int range)
         {
-            //Linked list sorting
-            DataList listData = new MyList(n, seed, range);
-            Console.WriteLine("[OP-LIST] Counting sort");
-            listData.Print(listData.Length);
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("========================List=======================");
 
-            Stopwatch t2 = new Stopwatch();
-            t2.Start();
-            CountSort(listData);
-            t2.Stop();
+            foreach (int count in Program.KIEKIAI)
+            {
+                //Linked list sorting
+                DataList listData = new MyList(count, seed, range);
+                //listData.Print(listData.Length);
 
-            listData.Print(listData.Length);
-            Console.WriteLine("Time: " + t2.ElapsedMilliseconds + "ms");
+                Stopwatch t2 = new Stopwatch();
+                t2.Start();
+                CountSort(listData);
+                t2.Stop();
 
-            //Clears memory
-            listData = null;
-            System.GC.Collect();
+                //listData.Print(listData.Length);
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                //Clears memory
+                listData = null;
+                System.GC.Collect();
+            }
+
+            builder.AppendLine("===================================================");
+            Console.Write(builder.ToString());
         }
 
         /// <summary>
@@ -67,22 +86,36 @@ namespace Count_Bucket_Sort
         /// <param name="n">Elements count</param>
         /// <param name="seed">Seed</param>
         /// <param name="fileName">File name</param>
-        public void TestArray_D(int n, int seed, int range, string fileName)
+        public void TestArray_D(int seed, int range, string fileName)
         {
-            MyFileArray dataArray = new MyFileArray(fileName, n, seed, range);
-            using (dataArray.fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("COUNTING SORT D");
+            builder.AppendLine("===================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |");
+            builder.AppendLine("========================ARRAY======================");
+
+            foreach (int count in Program.KIEKIAI)
             {
-                Console.WriteLine("[DISK-ARRAY] Counting sort");
-                dataArray.Print(n);
+                MyFileArray dataArray = new MyFileArray(fileName, count, seed, range);
+                using (dataArray.fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    //dataArray.Print(n);
 
-                Stopwatch t1 = new Stopwatch();
-                t1.Start();
-                CountSort(dataArray);
-                t1.Stop();
+                    Stopwatch t1 = new Stopwatch();
+                    t1.Start();
+                    CountSort(dataArray);
+                    t1.Stop();
 
-                dataArray.Print(n);
-                Console.WriteLine("Time: " + t1.ElapsedMilliseconds + "ms");
+                    //dataArray.Print(n);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+
+                    //Clears memory
+                    dataArray = null;
+                    System.GC.Collect();
+                }
             }
+
+            Console.Write(builder.ToString());
         }
        
         /// <summary>
@@ -92,22 +125,30 @@ namespace Count_Bucket_Sort
         /// <param name="seed">Generating seed</param>
         /// <param name="range">Element range</param>
         /// <param name="fileName">File name</param>
-        public void TestList_D(int n, int seed, int range, string fileName)
+        public void TestList_D(int seed, int range, string fileName)
         {
-            MyFileList dataList = new MyFileList(fileName, n, seed, range);
-            using (dataList.fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("========================List=======================");
+
+            foreach (int count in Program.KIEKIAI)
             {
-                Console.WriteLine("[DISK-LIST] Counting sort");
-                dataList.Print(n);
+                MyFileList dataList = new MyFileList(fileName, count, seed, range);
+                using (dataList.fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    //dataList.Print(n);
 
-                Stopwatch t2 = new Stopwatch();
-                t2.Start();
-                CountSort(dataList);
-                t2.Stop();
+                    Stopwatch t2 = new Stopwatch();
+                    t2.Start();
+                    CountSort(dataList);
+                    t2.Stop();
 
-                dataList.Print(n);
-                Console.WriteLine("Time: " + t2.ElapsedMilliseconds + "ms");
+                    //dataList.Print(n);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                }
             }
+
+            builder.AppendLine("===================================================");
+            Console.Write(builder.ToString());
         }
         /// <summary>
         /// Counting sort for array
