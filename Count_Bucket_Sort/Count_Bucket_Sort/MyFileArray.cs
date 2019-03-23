@@ -9,6 +9,13 @@ namespace Count_Bucket_Sort
 {
     class MyFileArray : DataArray
     {
+        /// <summary>
+        /// Generates data and writes to file
+        /// </summary>
+        /// <param name="fileName">File name</param>
+        /// <param name="n">Elements count</param>
+        /// <param name="seed">Generating seed</param>
+        /// <param name="range">Elements range</param>
         public MyFileArray(string fileName, int n, int seed, int range)
         {
             int[] data = new int[n];
@@ -60,6 +67,10 @@ namespace Count_Bucket_Sort
             }
         }
 
+        /// <summary>
+        /// Finds smallest value
+        /// </summary>
+        /// <returns>Smalles value</returns>
         public override int Min()
         {
             int minValue = this[0];
@@ -72,6 +83,10 @@ namespace Count_Bucket_Sort
             return minValue;
         }
 
+        /// <summary>
+        /// Finds highest value
+        /// </summary>
+        /// <returns>Highest value</returns>
         public override int Max()
         {
             int maxValue = this[0];

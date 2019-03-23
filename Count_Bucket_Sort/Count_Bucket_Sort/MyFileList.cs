@@ -13,6 +13,21 @@ namespace Count_Bucket_Sort
         int currentNode;
         int nextNode;
 
+        public MyFileList(string fileName)
+        {
+            length = 0;
+
+            if (File.Exists(fileName))
+                File.Delete(fileName);
+        }
+
+        /// <summary>
+        /// Generates data and writes it to file
+        /// </summary>
+        /// <param name="fileName">File name</param>
+        /// <param name="n">Elements count</param>
+        /// <param name="seed">Generating seed</param>
+        /// <param name="range">Elements range</param>
         public MyFileList(string fileName, int n, int seed, int range)
         {
             length = n;
@@ -27,8 +42,7 @@ namespace Count_Bucket_Sort
                     writer.Write(4);
                     for (int j = 0; j < length; j++)
                     {
-                        int sudas = rand.Next(0, range);
-                        writer.Write(sudas);
+                        writer.Write(rand.Next(0, range));
                         if (j - 1 == length)
                             writer.Write(-1);
                         else
@@ -46,6 +60,10 @@ namespace Count_Bucket_Sort
 
         public FileStream fs { get; set; }
 
+        /// <summary>
+        /// Changes current node's dataa
+        /// </summary>
+        /// <param name="element">Data</param>
         public override void ChangeData(int element)
         {
             Byte[] data = BitConverter.GetBytes(element);
@@ -53,6 +71,10 @@ namespace Count_Bucket_Sort
             fs.Write(data, 0, 4);
         }
 
+        /// <summary>
+        /// Returns current node's data
+        /// </summary>
+        /// <returns>Node's data</returns>
         public override int Current()
         {
             Byte[] data = new Byte[4];
@@ -61,6 +83,10 @@ namespace Count_Bucket_Sort
             return BitConverter.ToInt32(data, 0);
         }
 
+        /// <summary>
+        /// Finds first node
+        /// </summary>
+        /// <returns>First node's data</returns>
         public override int Head()
         {
             Byte[] data = new Byte[8];
@@ -75,6 +101,10 @@ namespace Count_Bucket_Sort
             return result;
         }
 
+        /// <summary>
+        /// Finds highest value
+        /// </summary>
+        /// <returns>Highest value</returns>
         public override int Max()
         {
             Byte[] data = new Byte[4];
@@ -93,6 +123,10 @@ namespace Count_Bucket_Sort
             return maxValue;
         }
 
+        /// <summary>
+        /// Finds smallest value
+        /// </summary>
+        /// <returns>Smallest value</returns>
         public override int Min()
         {
             Byte[] data = new Byte[4];
@@ -111,6 +145,10 @@ namespace Count_Bucket_Sort
             return minValue;
         }
 
+        /// <summary>
+        /// Selects next node
+        /// </summary>
+        /// <returns>Current node data</returns>
         public override int Next()
         {
             Byte[] data = new Byte[8];
@@ -130,6 +168,10 @@ namespace Count_Bucket_Sort
             return result;
         }
 
+        /// <summary>
+        /// Checks if current node exists
+        /// </summary>
+        /// <returns>True if exists, false if not</returns>
         public override bool Exists()
         {
             if (currentNode == -1)
@@ -144,6 +186,10 @@ namespace Count_Bucket_Sort
             return true;
         }
 
+        /// <summary>
+        /// Puts element in current node
+        /// </summary>
+        /// <param name="element">Element</param>
         public override void Put(int element)
         {
             Byte[] data = BitConverter.GetBytes(element);
@@ -151,6 +197,13 @@ namespace Count_Bucket_Sort
             fs.Write(data, 0, 4);
         }
 
+
+
+        /// <summary>
+        /// Swaps previous node's data with current
+        /// </summary>
+        /// <param name="a">Element to previous node</param>
+        /// <param name="b">Element to current node</param>
         public override void Swap(int a, int b)
         {
             Byte[] data;

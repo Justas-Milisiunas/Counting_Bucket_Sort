@@ -35,6 +35,10 @@ namespace Count_Bucket_Sort
             }
         }
 
+        /// <summary>
+        /// Finds smallest value
+        /// </summary>
+        /// <returns>Smallest value</returns>
         public override int Min()
         {
             int minValue = data[0];
@@ -49,6 +53,10 @@ namespace Count_Bucket_Sort
             return minValue;
         }
 
+        /// <summary>
+        /// Finds highest value
+        /// </summary>
+        /// <returns>Highest value</returns>
         public override int Max()
         {
             int maxValue = data[0];

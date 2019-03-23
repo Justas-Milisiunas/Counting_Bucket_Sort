@@ -55,6 +55,10 @@ namespace Count_Bucket_Sort
             }
         }
 
+        /// <summary>
+        /// Adds element to list
+        /// </summary>
+        /// <param name="data">Element</param>
         public override void Put(int data)
         {
             Node temp = new Node(data, null);
@@ -73,6 +77,10 @@ namespace Count_Bucket_Sort
             length++;
         }
 
+        /// <summary>
+        /// Changes current node's data
+        /// </summary>
+        /// <param name="data">Element</param>
         public override void ChangeData(int data)
         {
             if (currentNode == null)
@@ -113,6 +121,10 @@ namespace Count_Bucket_Sort
             return maxValue;
         }
 
+        /// <summary>
+        /// Assigns current node to first node
+        /// </summary>
+        /// <returns>First elemet</returns>
         public override int Head()
         {
             currentNode = headNode;
@@ -120,11 +132,19 @@ namespace Count_Bucket_Sort
             return currentNode.data;
         }
 
+        /// <summary>
+        /// Checks if current node exists
+        /// </summary>
+        /// <returns>True if exists, false if not</returns>
         public override bool Exists()
         {
             return currentNode != null;
         }
 
+        /// <summary>
+        /// Selects next node, and return current node's data
+        /// </summary>
+        /// <returns>Current node's data</returns>
         public override int Next()
         {
             prevNode = currentNode;
@@ -138,11 +158,20 @@ namespace Count_Bucket_Sort
             return currentNode.data;
         }
 
+        /// <summary>
+        /// Returns current node's data
+        /// </summary>
+        /// <returns>Data</returns>
         public override int Current()
         {
             return currentNode.data;
         }
 
+        /// <summary>
+        /// Changes data
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         public override void Swap(int a, int b)
         {
             prevNode.data = a;
