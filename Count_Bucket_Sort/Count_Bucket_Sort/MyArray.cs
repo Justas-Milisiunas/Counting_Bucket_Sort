@@ -8,6 +8,7 @@ namespace Count_Bucket_Sort
 {
     class MyArray : DataArray
     {
+        public override int Operations { get; set; }
         int[] data;
 
         public MyArray(int n)
@@ -17,6 +18,7 @@ namespace Count_Bucket_Sort
 
         public MyArray(int n, int seed, int range)
         {
+            this.Operations = 0;
             data = new int[n];
             length = n;
 
@@ -29,7 +31,9 @@ namespace Count_Bucket_Sort
 
         public MyArray(MyArray array)
         {
-            for(int i = 0; i < array.length; i++)
+            this.Operations = 0;
+
+            for (int i = 0; i < array.length; i++)
             {
                 data[i] = array.length;
             }
@@ -42,10 +46,14 @@ namespace Count_Bucket_Sort
         public override int Min()
         {
             int minValue = data[0];
+            Operations += 2;
+
             for (int i = 1; i < length; i++)
             {
+                Operations++;
                 if(data[i] < minValue)
                 {
+                    Operations++;
                     minValue = data[i];
                 }
             }
@@ -60,21 +68,34 @@ namespace Count_Bucket_Sort
         public override int Max()
         {
             int maxValue = data[0];
+            Operations += 2;
+
             for (int i = 1; i < length; i++)
             {
+                Operations++;
                 if (data[i] > maxValue)
                 {
                     maxValue = data[i];
+                    Operations++;
                 }
             }
 
+            Operations++;
             return maxValue;
         }
 
         public override int this[int index]
         {
-            get { return data[index]; }
-            set { data[index] = value; }
+            set
+            {
+                Operations++;
+                data[index] = value;
+            }
+            get
+            {
+                Operations++;
+                return data[index];
+            }
         }
     }
 }

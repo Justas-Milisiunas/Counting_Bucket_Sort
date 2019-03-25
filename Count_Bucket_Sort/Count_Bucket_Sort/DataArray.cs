@@ -16,6 +16,7 @@ namespace Count_Bucket_Sort
         public abstract int Min();
         public abstract int Max();
         public abstract int this[int index] { get; set; }
+        public abstract int Operations { get; set; }
 
         public void Print(int n)
         {

@@ -8,7 +8,7 @@ namespace Count_Bucket_Sort
 {
     class Program
     {
-        public static readonly int[] KIEKIAI = new int[] { 1000, 2500, 10_000, 100_000 };
+        public static readonly int[] KIEKIAI = new int[] { 1000, 5000, 10000, 20_000, 50_000, 250_000, 1_000_000, 4_000_000  };
 
         static void Main(string[] args)
         {

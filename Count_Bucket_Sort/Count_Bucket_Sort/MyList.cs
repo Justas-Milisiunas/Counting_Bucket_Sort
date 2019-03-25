@@ -20,6 +20,8 @@ namespace Count_Bucket_Sort
             }
         }
 
+        public override int Operations { get; set; }
+
         Node headNode;
         Node prevNode;
         Node currentNode;
@@ -29,10 +31,12 @@ namespace Count_Bucket_Sort
             headNode = null;
             prevNode = null;
             currentNode = null;
+            Operations = 0;
         }
 
         public MyList(int n, int seed, int range)
         {
+            Operations = 0;
             length = n;
             Random rand = new Random(seed);
 
@@ -49,6 +53,7 @@ namespace Count_Bucket_Sort
 
         public MyList(int[] data)
         {
+            Operations = 0;
             for (int i = 0; i < data.Length; i++)
             {
                 this.Put(data[i]);
@@ -83,9 +88,14 @@ namespace Count_Bucket_Sort
         /// <param name="data">Element</param>
         public override void ChangeData(int data)
         {
+            Operations++;
             if (currentNode == null)
+            {
+                Operations++;
                 return;
+            }
 
+            Operations++;
             currentNode.data = data;
         }
 
@@ -95,13 +105,19 @@ namespace Count_Bucket_Sort
         /// <returns>Min value</returns>
         public override int Min()
         {
+            Operations++;
             int minValue = headNode.data;
             for(Node i = headNode.nextNode; i != null; i = i.nextNode)
             {
+                Operations++;
                 if(i.data < minValue)
+                {
                     minValue = i.data;
+                    Operations++;
+                }
             }
 
+            Operations++;
             return minValue;
         }
 
@@ -111,13 +127,19 @@ namespace Count_Bucket_Sort
         /// <returns>Max value</returns>
         public override int Max()
         {
+            Operations++;
             int maxValue = headNode.data;
             for (Node i = headNode.nextNode; i != null; i = i.nextNode)
             {
+                Operations++;
                 if (i.data > maxValue)
+                {
+                    Operations++;
                     maxValue = i.data;
+                }
             }
 
+            Operations++;
             return maxValue;
         }
 
@@ -127,6 +149,7 @@ namespace Count_Bucket_Sort
         /// <returns>First elemet</returns>
         public override int Head()
         {
+            Operations += 3;
             currentNode = headNode;
             prevNode = null;
             return currentNode.data;
@@ -138,6 +161,7 @@ namespace Count_Bucket_Sort
         /// <returns>True if exists, false if not</returns>
         public override bool Exists()
         {
+            Operations++;
             return currentNode != null;
         }
 
@@ -147,13 +171,16 @@ namespace Count_Bucket_Sort
         /// <returns>Current node's data</returns>
         public override int Next()
         {
+            Operations += 2;
             prevNode = currentNode;
             if (currentNode.nextNode == null)
             {
+                Operations += 2;
                 currentNode = null;
                 return 0;
             }
 
+            Operations += 2;
             currentNode = currentNode.nextNode;
             return currentNode.data;
         }
@@ -164,6 +191,7 @@ namespace Count_Bucket_Sort
         /// <returns>Data</returns>
         public override int Current()
         {
+            Operations++;
             return currentNode.data;
         }
 
@@ -174,6 +202,7 @@ namespace Count_Bucket_Sort
         /// <param name="b"></param>
         public override void Swap(int a, int b)
         {
+            Operations += 2;
             prevNode.data = a;
             currentNode.data = b;
         }

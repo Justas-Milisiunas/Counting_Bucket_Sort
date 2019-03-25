@@ -13,6 +13,7 @@ namespace Count_Bucket_Sort
     {
         protected int length;
         public int Length { get { return length; } set { length = value; } }
+        public abstract int Operations { get; set; }
         public abstract int Head();
         public abstract int Next();
         public abstract int Current();
