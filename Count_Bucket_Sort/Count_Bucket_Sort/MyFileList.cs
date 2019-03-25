@@ -9,6 +9,8 @@ namespace Count_Bucket_Sort
 {
     class MyFileList : DataList
     {
+        public override int Operations { get; set; }
+
         int prevNode;
         int currentNode;
         int nextNode;
@@ -16,6 +18,7 @@ namespace Count_Bucket_Sort
         public MyFileList(string fileName)
         {
             length = 0;
+            Operations = 0;
 
             if (File.Exists(fileName))
                 File.Delete(fileName);
@@ -30,6 +33,7 @@ namespace Count_Bucket_Sort
         /// <param name="range">Elements range</param>
         public MyFileList(string fileName, int n, int seed, int range)
         {
+            Operations = 0;
             length = n;
             Random rand = new Random(seed);
             if (File.Exists(fileName))
@@ -66,6 +70,7 @@ namespace Count_Bucket_Sort
         /// <param name="element">Data</param>
         public override void ChangeData(int element)
         {
+            Operations += 3;
             Byte[] data = BitConverter.GetBytes(element);
             fs.Seek(currentNode, SeekOrigin.Begin);
             fs.Write(data, 0, 4);
@@ -77,6 +82,7 @@ namespace Count_Bucket_Sort
         /// <returns>Node's data</returns>
         public override int Current()
         {
+            Operations += 4;
             Byte[] data = new Byte[4];
             fs.Seek(currentNode, SeekOrigin.Begin);
             fs.Read(data, 0, 4);
@@ -89,6 +95,7 @@ namespace Count_Bucket_Sort
         /// <returns>First node's data</returns>
         public override int Head()
         {
+            Operations += 10;
             Byte[] data = new Byte[8];
             fs.Seek(0, SeekOrigin.Begin);
             fs.Read(data, 0, 4);
@@ -107,6 +114,7 @@ namespace Count_Bucket_Sort
         /// <returns>Highest value</returns>
         public override int Max()
         {
+            Operations += 4;
             Byte[] data = new Byte[4];
             fs.Seek(0, SeekOrigin.Begin);
             fs.Read(data, 0, 4);
@@ -114,12 +122,15 @@ namespace Count_Bucket_Sort
 
             for(Head(); Exists(); Next())
             {
+                Operations++;
                 if(Current() > maxValue)
                 {
+                    Operations++;
                     maxValue = Current();
                 }
             }
 
+            Operations++;
             return maxValue;
         }
 
@@ -129,6 +140,7 @@ namespace Count_Bucket_Sort
         /// <returns>Smallest value</returns>
         public override int Min()
         {
+            Operations += 4;
             Byte[] data = new Byte[4];
             fs.Seek(4, SeekOrigin.Begin);
             fs.Read(data, 0, 4);
@@ -136,12 +148,15 @@ namespace Count_Bucket_Sort
 
             for (Head(); Exists(); Next())
             {
+                Operations++;
                 if (Current() < minValue)
                 {
+                    Operations++;
                     minValue = Current();
                 }
             }
 
+            Operations++;
             return minValue;
         }
 
@@ -151,6 +166,7 @@ namespace Count_Bucket_Sort
         /// <returns>Current node data</returns>
         public override int Next()
         {
+            Operations += 8;
             Byte[] data = new Byte[8];
             fs.Seek(nextNode, SeekOrigin.Begin);
             fs.Read(data, 0, 8);
@@ -161,10 +177,12 @@ namespace Count_Bucket_Sort
 
             if(nextNode == 0)
             {
+                Operations += 2;
                 currentNode = -1;
                 return 0;
             }
 
+            Operations++;
             return result;
         }
 
@@ -174,15 +192,24 @@ namespace Count_Bucket_Sort
         /// <returns>True if exists, false if not</returns>
         public override bool Exists()
         {
+            Operations++;
             if (currentNode == -1)
+            {
+                Operations++;
                 return false;
+            }
 
+            Operations += 4;
             Byte[] data = new Byte[4];
             fs.Seek(currentNode+4, SeekOrigin.Begin);
             fs.Read(data, 0, 4);
             if (BitConverter.ToInt32(data, 0) == -1)
+            {
+                Operations++;
                 return false;
+            }
 
+            Operations++;
             return true;
         }
 

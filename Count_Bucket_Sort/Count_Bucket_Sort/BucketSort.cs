@@ -20,11 +20,11 @@ namespace Count_Bucket_Sort
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("BUCKET SORT OP");
-            builder.AppendLine("===================================================");
-            builder.AppendLine("| Number of elements |        |    Runtime time   |");
-            builder.AppendLine("========================ARRAY======================");
+            builder.AppendLine("=============================================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |        |   Operations   |");
+            builder.AppendLine("====================================ARRAY====================================");
 
-            foreach(int count in Program.KIEKIAI)
+            foreach (int count in Program.KIEKIAI)
             {
                 //Array sorting
                 DataArray data = new MyArray(count, seed, range);
@@ -36,7 +36,7 @@ namespace Count_Bucket_Sort
                 t1.Stop();
 
                 //data.Print(data.Length);
-                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t1.Elapsed.ToString(), data.Operations));
 
                 //Clears memory
                 data = null;
@@ -55,7 +55,7 @@ namespace Count_Bucket_Sort
         public void TestList_OP(int seed, int range)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("========================List=======================");
+            builder.AppendLine("==================================LIST=======================================");
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -69,14 +69,14 @@ namespace Count_Bucket_Sort
                 t2.Stop();
 
                 //listData.Print(listData.Length);
-                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t2.Elapsed.ToString(), listData.Operations));
 
                 //Clears memory
                 listData = null;
                 System.GC.Collect();
             }
 
-            builder.AppendLine("===================================================");
+            builder.AppendLine("=============================================================================");
             Console.Write(builder.ToString());
         }
 
@@ -91,9 +91,9 @@ namespace Count_Bucket_Sort
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("BUCKET SORT D");
-            builder.AppendLine("===================================================");
-            builder.AppendLine("| Number of elements |        |    Runtime time   |");
-            builder.AppendLine("========================ARRAY======================");
+            builder.AppendLine("=============================================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |        |   Operations   |");
+            builder.AppendLine("====================================FILE-ARRAY===============================");
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -108,8 +108,8 @@ namespace Count_Bucket_Sort
                     Sort(array);
                     t1.Stop();
 
-                    //array.Print(n);
-                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+                    //array.Print(count);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t1.Elapsed.ToString(), array.Operations));
                 }
 
                 //Clears memory
@@ -130,7 +130,7 @@ namespace Count_Bucket_Sort
         public void TestList_D(int seed, int range, string fileName)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("========================List=======================");
+            builder.AppendLine("====================================FILE-LIST==============================");
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -144,12 +144,12 @@ namespace Count_Bucket_Sort
                     Sort(dataList);
                     t2.Stop();
 
-                    //dataList.Print(n);
-                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                    //dataList.Print(count);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t2.Elapsed.ToString(), dataList.Operations));
                 }
             }
 
-            builder.AppendLine("===================================================");
+            builder.AppendLine("=============================================================================");
             Console.Write(builder.ToString());
         }
 

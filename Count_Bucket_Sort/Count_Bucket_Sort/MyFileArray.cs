@@ -9,6 +9,8 @@ namespace Count_Bucket_Sort
 {
     class MyFileArray : DataArray
     {
+        public override int Operations { get; set; }
+
         /// <summary>
         /// Generates data and writes to file
         /// </summary>
@@ -52,6 +54,7 @@ namespace Count_Bucket_Sort
         {
             get
             {
+                Operations += 5;
                 Byte[] data = new Byte[4];
                 fs.Seek(4 * index, SeekOrigin.Begin);
                 fs.Read(data, 0, 4);
@@ -60,6 +63,7 @@ namespace Count_Bucket_Sort
             }
             set
             {
+                Operations += 4;
                 Byte[] data = new Byte[4];
                 BitConverter.GetBytes(value).CopyTo(data, 0);
                 fs.Seek(4 * index, SeekOrigin.Begin);
@@ -73,13 +77,19 @@ namespace Count_Bucket_Sort
         /// <returns>Smalles value</returns>
         public override int Min()
         {
+            Operations++;
             int minValue = this[0];
             for(int i = 1; i < length; i++)
             {
+                Operations++;
                 if (this[i] < minValue)
+                {
                     minValue = this[i];
+                    Operations++;
+                }
             }
 
+            Operations++;
             return minValue;
         }
 
@@ -89,13 +99,20 @@ namespace Count_Bucket_Sort
         /// <returns>Highest value</returns>
         public override int Max()
         {
+            Operations++;
             int maxValue = this[0];
+
             for (int i = 1; i < length; i++)
             {
+                Operations++;
                 if (this[i] > maxValue)
+                {
+                    Operations++;
                     maxValue = this[i];
+                }
             }
 
+            Operations++;
             return maxValue;
         }
     }

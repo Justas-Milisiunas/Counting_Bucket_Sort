@@ -20,9 +20,9 @@ namespace Count_Bucket_Sort
             Console.Clear();
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("COUNTING SORT OP");
-            builder.AppendLine("===================================================");
-            builder.AppendLine("| Number of elements |        |    Runtime time   |");
-            builder.AppendLine("========================ARRAY======================");
+            builder.AppendLine("=============================================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |        |   Operations   |");
+            builder.AppendLine("====================================ARRAY====================================");
 
             foreach(int count in Program.KIEKIAI)
             {
@@ -37,7 +37,7 @@ namespace Count_Bucket_Sort
 
                 //data.Print(data.Length);
                 //Console.WriteLine("Time: " + t1.ElapsedMilliseconds + "ms");
-                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t1.Elapsed.ToString(), data.Operations));
 
                 //Clears memory
                 data = null;
@@ -56,7 +56,7 @@ namespace Count_Bucket_Sort
         public void TestList_OP(int seed, int range)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("========================List=======================");
+            builder.AppendLine("==================================LIST=======================================");
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -70,13 +70,13 @@ namespace Count_Bucket_Sort
                 t2.Stop();
 
                 //listData.Print(listData.Length);
-                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t2.Elapsed.ToString(), listData.Operations));
                 //Clears memory
                 listData = null;
                 System.GC.Collect();
             }
 
-            builder.AppendLine("===================================================");
+            builder.AppendLine("=============================================================================");
             Console.Write(builder.ToString());
         }
 
@@ -90,9 +90,9 @@ namespace Count_Bucket_Sort
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("COUNTING SORT D");
-            builder.AppendLine("===================================================");
-            builder.AppendLine("| Number of elements |        |    Runtime time   |");
-            builder.AppendLine("========================ARRAY======================");
+            builder.AppendLine("=============================================================================");
+            builder.AppendLine("| Number of elements |        |    Runtime time   |        |   Operations   |");
+            builder.AppendLine("====================================FILE-ARRAY===============================");
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -106,8 +106,8 @@ namespace Count_Bucket_Sort
                     CountSort(dataArray);
                     t1.Stop();
 
-                    //dataArray.Print(n);
-                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t1.Elapsed.ToString()));
+                    //dataArray.Print(count);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t1.Elapsed.ToString(), dataArray.Operations));
 
                     //Clears memory
                     dataArray = null;
@@ -128,7 +128,8 @@ namespace Count_Bucket_Sort
         public void TestList_D(int seed, int range, string fileName)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("========================List=======================");
+            builder.AppendLine("====================================FILE-LIST==============================");
+
 
             foreach (int count in Program.KIEKIAI)
             {
@@ -142,12 +143,12 @@ namespace Count_Bucket_Sort
                     CountSort(dataList);
                     t2.Stop();
 
-                    //dataList.Print(n);
-                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|", count, t2.Elapsed.ToString()));
+                    //dataList.Print(count);
+                    builder.AppendLine(string.Format("|{0,-20}|        |{1} ms|        |{2, -16}|", count, t2.Elapsed.ToString(), dataList.Operations));
                 }
             }
 
-            builder.AppendLine("===================================================");
+            builder.AppendLine("=============================================================================");
             Console.Write(builder.ToString());
         }
         /// <summary>
@@ -156,9 +157,14 @@ namespace Count_Bucket_Sort
         /// <param name="items">Array</param>
         public void CountSort(DataArray array)
         {
+            int operationsCount = 1;
             if (array == null)
+            {
+                operationsCount++;
                 return;
+            }
 
+            operationsCount += 4;
             //Finds min and max
             int[] output = new int[array.Length];
             int minValue = array.Min();
@@ -168,27 +174,34 @@ namespace Count_Bucket_Sort
             int[] counts = new int[maxValue - minValue + 1];
             for (int i = 0; i < array.Length; i++)
             {
+                operationsCount++;
                 counts[array[i] - minValue]++;
             }
 
+            operationsCount++;
             //Each element stores the sum of previous counts
             counts[0]--;
             for (int i = 1; i < counts.Length; i++)
             {
+                operationsCount++;
                 counts[i] += counts[i - 1];
             }
 
             //Puts each element from items array to the right place using counts saved index
             for (int i = 0; i < array.Length; i++)
             {
+                operationsCount++;
                 output[counts[array[i] - minValue]--] = array[i];
             }
 
             //Copies output to object
             for (int i = 0; i < array.Length; i++)
             {
+                operationsCount++;
                 array[i] = output[i];
             }
+
+            array.Operations += operationsCount;
         }
 
         /// <summary>
@@ -197,9 +210,14 @@ namespace Count_Bucket_Sort
         /// <param name="list">List</param>
         public void CountSort(DataList list)
         {
+            int operationsCount = 1;
             if (list == null)
+            {
+                operationsCount++;
                 return;
+            }
 
+            operationsCount += 4;
             //Finds min and max values
             int[] output = new int[list.Length];
             int minValue = list.Min();
@@ -209,29 +227,37 @@ namespace Count_Bucket_Sort
             int[] counts = new int[maxValue - minValue + 1];
             for(list.Head(); list.Exists(); list.Next())
             {
+                operationsCount++;
                 counts[list.Current() - minValue]++;
             }
 
+            operationsCount++;
             //Each element stores the sum of previous counts
             counts[0]--;
             for (int i = 1; i < counts.Length; i++)
             {
+                operationsCount++;
                 counts[i] += counts[i - 1];
             }
 
             for (list.Head(); list.Exists(); list.Next())
             {
+                operationsCount++;
                 output[counts[list.Current() - minValue]--] = list.Current();
             }
 
+            operationsCount++;
             //list = new MyLinkedList(output);
             list.Head();
             for(int i = 0; i < list.Length; i++)
             {
+                operationsCount += 2;
                 list.ChangeData(output[i]);
                 list.Next();
 
             }
+
+            list.Operations += operationsCount;
         }
     }
 }
